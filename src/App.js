@@ -6,16 +6,16 @@ import { Provider } from 'react-redux';
 import compstore from './Redux/Store';
 import { ToastContainer } from 'react-toastify';
 
+
 function App() {
   return (
     <Provider store={compstore}>
-    <BrowserRouter>
-
-      <Routes>
-       <Route path='/' element={<Company></Company>}></Route>
-      </Routes>
-    </BrowserRouter>
-    <ToastContainer position='top-right'></ToastContainer>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Company></Company>}></Route>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer position='top-right'></ToastContainer>
     </Provider>
   );
 }

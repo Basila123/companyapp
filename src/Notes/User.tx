@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { CreateCompany, GetAllCompanys, GetCompanybycode, RemoveCompany, UpdateCompany } from "../Redux/ActionCreater";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { OpenPopup } from "../Redux/Action";
-import CloseIcon from "@mui/icons-material/Close";
-import './Company.css'
+import CloseIcon from "@mui/icons-material/Close"
 
 const Company = (props) => {
     const columns = [
@@ -29,30 +28,12 @@ const Company = (props) => {
 
     const [rowperpage, setrowperpage] = useState(5);
     const [page, pagechange] = useState(0);
-    const [emailerror,setemailerror]=useState('')
 
     const [isedit, setisedit] = useState(false);
     const [title, settitle] = useState('Create user');
 
     const editobj = useSelector((state) => state.company.companyobj);
 
-
-    const handleemail=(e)=>{
-        setemail(e.target.value)
-        if(!validateemail(e.target.value)){
-            setemailerror('please enter valid proper email format')
-        }
-        else{
-            setemailerror('')
-        }
-    }
-
-
-    const validateemail=(email)=>{
-        let emailregex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]+$/i;
-        return emailregex.test(email)
-
-    }
     useEffect(()=>{
         if(Object.keys(editobj).length)
         {
@@ -129,31 +110,14 @@ const Company = (props) => {
     return (
         props.companystate.isloading ? <div><h2>Loading.....</h2></div> :
         props.companystate.errormessage ? <div><h2>{props.companystate.errormessage}</h2></div> :
-            <div className="parentdiv">
-                <Paper className="tablePaper" sx={{ display:'flex',
-                    flexDirection:'column',
-                    alignItems:'center',
-                    justifyContent:'center',
-                    width:{
-                    xs:700,
-                    sm:950,
-                    md:1000,
-                    lg:1220,
-                    xl:1500
-                }
-                }}>
-                    <div style={{ margin: '1%',display:'flex',justifyContent:'flex-end',width:'60%' }}>
-                        <Button sx={{alignSelf:'flex-end'}} onClick={functionadd} variant="contained">Add New (+)</Button>
+            <div>
+                <Paper sx={{ margin: '1%' }}>
+                    <div style={{ margin: '1%' }}>
+                        <Button onClick={functionadd} variant="contained">Add New (+)</Button>
       </div>
-                    <div style={{ margin: '1%',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center' }}>
-                        <TableContainer  sx={{ display:"flex",flexDirection:'column',justifyContent:'center',alignItems:'center', width:{
-                    xs:500,
-                    sm:600,
-                    md:800,
-                    lg:900,
-                    xl:1000
-                }}}>
-                            <Table className='tablemain'>
+                    <div style={{ margin: '1%' }}>
+                        <TableContainer>
+                            <Table>
                                 <TableHead>
                                     <TableRow style={{ backgroundColor: 'midnightblue' }}>
                                         {columns.map((column) =>
@@ -175,38 +139,8 @@ const Company = (props) => {
                                                         <TableCell>{row.email}</TableCell>
                                                         <TableCell>{row.role}</TableCell>
                                                         <TableCell>
-                                                            <Button sx={{
-                                                                width:{
-                                                                    xs:10,
-                                                                    sm:15,
-                                                                    md:20,
-                                                                    lg:30,
-                                                                    xl:50
-                                                                   },
-                                                                height:{
-                                                                    xs:10,
-                                                                    sm:15,
-                                                                    md:20,
-                                                                    lg:30,
-                                                                    xl:50
-                                                                }
-                                                            }} onClick={e => { handleEdit(row.id) }} variant="contained" color="primary">Edit</Button>
-                                                            <Button sx={{
-                                                                width:{
-                                                                    xs:10,
-                                                                    sm:15,
-                                                                    md:20,
-                                                                    lg:30,
-                                                                    xl:50
-                                                                   },
-                                                                height:{
-                                                                    xs:10,
-                                                                    sm:15,
-                                                                    md:20,
-                                                                    lg:30,
-                                                                    xl:50
-                                                                }
-                                                            }} onClick={e => { handleRemove(row.id) }} variant="contained" color="error">Delete</Button>
+                                                            <Button onClick={e => { handleEdit(row.id) }} variant="contained" color="primary">Edit</Button>
+                                                            <Button onClick={e => { handleRemove(row.id) }} variant="contained" color="error">Delete</Button>
 
                                                         </TableCell>
                                                     </TableRow>
@@ -218,13 +152,6 @@ const Company = (props) => {
                             </Table>
                         </TableContainer>
                         <TablePagination
-                            sx={{ width:{
-                                xs:500,
-                                sm:600,
-                                md:700,
-                                lg:800,
-                                xl:1000
-                            }}}
                             rowsPerPageOptions={[2, 5, 10, 20]}
                             rowsPerPage={rowperpage}
                             page={page}
@@ -248,13 +175,13 @@ const Company = (props) => {
                             <Stack spacing={2} margin={2}>
                                 <TextField required error={name.length === 0} value={name} onChange={e => { setname(e.target.value) }} variant="outlined" label="Name"></TextField>
                                 <TextField required error={name.length === 0} value={username} onChange={e => { setusername(e.target.value) }} variant="outlined" label="Username"></TextField>
-                                <TextField required error={Boolean(emailerror)} helperText={emailerror}value={email} onChange={e =>handleemail(e)} variant="outlined" label="Email"></TextField>
+                                <TextField required error={name.length === 0} value={email} onChange={e => { setemail(e.target.value) }} variant="outlined" label="Email"></TextField>
                                 <RadioGroup value={role} onChange={e => { setrole(e.target.value) }} row>
                                     <FormControlLabel value="User" control={<Radio color="success"></Radio>} label="User"></FormControlLabel>
                                     <FormControlLabel value="Admin" control={<Radio></Radio>} label="Admin"></FormControlLabel>
                                 </RadioGroup>
                                 <FormControlLabel checked={agreeterm} onChange={e => { agreetermchange(e.target.checked) }} control={<Checkbox></Checkbox>} label="Agree Terms & Conditions"></FormControlLabel>
-                                <Button  disabled={!agreeterm} variant="contained" type="submit">Submit</Button>
+                                <Button disabled={!agreeterm} variant="contained" type="submit">Submit</Button>
                             </Stack>
                         </form>
                     </DialogContent>
